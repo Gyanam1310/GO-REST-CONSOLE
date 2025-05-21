@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go Rest Console</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+    <div class="bg-container d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 console-container">
+                    <h1 class="text-center heading mb-4">GO REST CONSOLE</h1>
+                    <form id="consoleForm">
+                        <div class="form-group">
+                            <label for="requestUrl">Request URL</label>
+                            <input id="requestUrl" class="form-control" type="text"
+                                value="https://gorest.co.in/public-api/users" />
+                            <p id="requestUrlErrMsg" class="error-message"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="requestMethod">Request Method</label>
+                            <select id="requestMethod" class="form-control">
+                                <option value="POST">POST</option>
+                                <option value="PUT">PUT</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="requestBody">Request Body</label>
+                            <textarea id="requestBody" class="form-control" rows="5">{
+                                "id": 1234,
+                                "name": "John Doe",
+                                "email": "john.doe@example.com",
+                                "gender": "male",
+                                "status": "active"
+                            }</textarea>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Send Request</button>
+                        </div>
+                    </form>
+                    <div class="form-group mt-4">
+                        <label for="responseStatus">Response Status</label>
+                        <input id="responseStatus" class="form-control" type="text" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="responseBody">Response Body</label>
+                        <textarea id="responseBody" class="form-control" rows="6" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="index.js"></script>
+</body>
+</html>
