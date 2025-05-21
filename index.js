@@ -1,39 +1,66 @@
-let formEl = document.getElementById("consoleForm");
-let requestUrlInput = document.getElementById("requestUrl");
+let consoleFormEl = document.getElementById("consoleForm");
+let requestUrlEl = document.getElementById("requestUrl");
+let requestUrlErrMsgEl = document.getElementById("requestUrlErrMsg");
+let requestMethodEl = document.getElementById("requestMethod");
 let requestBodyEl = document.getElementById("requestBody");
+
 let responseStatusEl = document.getElementById("responseStatus");
 let responseBodyEl = document.getElementById("responseBody");
-let requestMethodEl = document.getElementById("requestMethod");
 
-formEl.addEventListener("submit", function(event) {
-    event.preventDefault();
+let formData = {
+    requestUrl: "https://gorest.co.in/public-api/users",
+    requestMethod: "POST",
+    requestBody: ""
+};
 
-    let methodValue = requestMethodEl.value; // Get the selected HTTP method
-    let url = requestUrlInput.value; // Get the request URL
+requestUrlEl.addEventListener("change", function(event) {
+    formData.requestUrl = event.target.value;
+});
+
+requestMethodEl.addEventListener("change", function(event) {
+    formData.requestMethod = event.target.value;
+});
+
+requestBodyEl.addEventListener("change", function(event) {
+    formData.requestBody = event.target.value;
+});
+
+function validateRequestUrl(formData) {
+    let { requestUrl } = formData;
+    if (requestUrl === "") {
+        requestUrlErrMsgEl.textContent = "Required*";
+    } else {
+        requestUrlErrMsgEl.textContent = "";
+    }
+}
+
+function sendRequest(formData) {
+    let { requestUrl, requestMethod, requestBody } = formData;
+
     let options = {
-        method: methodValue,
+        method: requestMethod,
         headers: {
-            "Content-Type": "application/json"
-        }
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: "Bearer b2d8461de1f1eac9ca5df72889265d23f55ebel56521d9ee866aa6113526e6"
+        },
+        body: requestBody
     };
 
-    // Add the request body for POST and PUT methods
-    if (methodValue === "POST" || methodValue === "PUT") {
-        options.body = JSON.stringify(requestBodyEl.value);
-    }
-
-    // Make the fetch request
-    fetch(url, options)
+    fetch(requestUrl, options)
         .then(function(response) {
-            responseStatusEl.value = response.status; // Display response status
             return response.json();
         })
         .then(function(jsonData) {
-            responseBodyEl.textContent = JSON.stringify(jsonData, null, 4); // Pretty print response JSON
+            let responseStatus = jsonData.code;
+            let responseBody = JSON.stringify(jsonData);
+            responseStatusEl.value = responseStatus;
+            responseBodyEl.value = responseBody;
         });
-});
+}
 
-// Update UI or handle changes to the request method (optional)
-requestMethodEl.addEventListener("change", function() {
-    console.log(`Request method changed to: ${requestMethodEl.value}`);
+consoleFormEl.addEventListener("submit", function(event) {
+    event.preventDefault();
+    validateRequestUrl(formData);
+    sendRequest(formData);
 });
